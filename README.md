@@ -15,4 +15,6 @@ nmcli con up enp0s3
 nmcli con mod "enp0s8" connection.autoconnect yes  
 nmcli con mod "enp0s3" connection.autoconnect yes  
 
+## set hostname
+hostnamectl set-hostname master  
 
