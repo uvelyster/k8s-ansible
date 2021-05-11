@@ -1,0 +1,14 @@
+- name: init cluster master
+  shell: |
+    kubeadm init --pod-network-cidr={{ POD_CIDR }} \
+                 --apiserver-advertise-address={{ MASTER_IP }} \
+                 --token={{ TOKEN }}
+  register: result
+  when: inventory_hostname in groups['controlplane']
+
+- name: join cluster nodes
+  shell: |
+    kubeadm join --token {{ TOKEN }} \
+                --discovery-token-unsafe-skip-ca-verification \
+                {{ MASTER_IP }}:6443
+  when: inventory_hostname in groups['nodes']

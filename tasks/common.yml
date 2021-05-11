@@ -1,0 +1,107 @@
+- name: selinux config
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: stop firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: false
+
+- name: swap off on runtime
+  #shell: swapoff `swapon -s  | grep dev | awk {'print $1'}`
+  shell: swapoff -a
+  #ignore_errors: yes
+  when: ansible_swaptotal_mb > 0
+
+- name: swap off on fstab
+  mount:
+    name: swap
+    fstype: swap
+    state: absent
+
+- name: Install docker repository file
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: Add kubernetes repo
+  yum_repository:
+    name: kubernetes
+    description: kubernetes repo
+    baseurl: https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+    enabled: yes
+    gpgcheck: yes
+    repo_gpgcheck: yes
+    gpgkey:
+      - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+      - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+- name: install kubernetes packages
+  yum:
+    name: "{{ item }}"
+    state: present
+    exclude: false
+  loop:
+    - docker-ce
+    - wget
+    - kubelet
+    - kubeadm
+    - kubectl
+
+- name: service starting
+  service:
+    name: docker
+    enabled: yes
+    state: started
+
+- name: configure resolv.conf
+  template:
+    src: files/resolv_file.j2
+    dest: /etc/resolv.conf
+
+- name: Ensure br_netfilter is enabled.
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: set sysctl for iptables
+  sysctl:
+    name: "{{ item }}"
+    value: '1'
+    reload: yes
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    state: present
+    sysctl_set: yes
+  loop:
+    - net.bridge.bridge-nf-call-ip6tables
+    - net.bridge.bridge-nf-call-iptables
+
+- name: docker and kubelet service starting
+  service:
+    name: '{{ item }}'
+    enabled: yes
+    state: started
+  loop:
+    - kubelet
+    - docker
+
+- name: copy hosts file to master
+  copy:
+    src: /etc/hosts
+    dest: /etc/hosts
+  when: inventory_hostname in groups['controlplane']
+
+- name: install dnsmasq
+  yum:
+    name: dnsmasq
+    state: installed
+  when: inventory_hostname in groups['controlplane']
+
+- name: service start
+  service:
+    name: dnsmasq
+    state: started
+    enabled: true
+  when: inventory_hostname in groups['controlplane']

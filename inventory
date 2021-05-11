@@ -1,0 +1,12 @@
+workstation
+
+[controlplane]
+master
+
+[nodes]
+node1
+node2
+
+[cluster_node:children]
+controlplane
+nodes

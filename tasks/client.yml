@@ -1,0 +1,20 @@
+- name: Configure kubectl
+  get_url:
+    url: https://storage.googleapis.com/kubernetes-release/release/v1.20.0/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: +x
+  delegate_to: workstation
+
+- name: Creates directory
+  file:
+    path: '{{ ansible_env.HOME }}/.kube'
+    state: directory
+  delegate_to: workstation
+
+- name: Copy admin config file from master
+  fetch:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ ansible_env.HOME }}/.kube/config"
+    flat: yes
+  become: true
+  when: inventory_hostname in groups['controlplane']

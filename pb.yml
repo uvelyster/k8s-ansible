@@ -1,0 +1,18 @@
+---
+- name: pb_1
+  hosts: cluster_node
+  remote_user: root
+  vars:
+    MASTER_IP: 172.16.0.201
+    POD_CIDR: 192.168.0.0/16
+    TOKEN: hello5.thismytoken12345
+
+  tasks:
+    - name: pre installation
+      import_tasks: tasks/common.yml
+
+    - name: initialize cluster
+      import_tasks: tasks/deploy-cluster.yml
+
+    - name: config clients
+      import_tasks: tasks/client.yml
