@@ -1,0 +1,19 @@
+12. resolv.conf.j2 복사
+  - 모듈: template
+  - 참고: resolv.conf.j2 파일을 생성
+
+13. /etc/hosts 복사
+  - 모듈: copy
+  - 참고: 마스터 호스트만 복사
+  - 패턴: inventory_hostname in groups['controlplane']
+
+14. dnsmasq 서비스 구성
+  - 모듈: yum
+  - 참고: state 선언
+  - 패턴: inventory_hostname in groups['controlplane']
+
+15. dnsmasq 서비스 시작
+  - 모듈: service
+  - 참고: state, enbled 선언
+  - 패턴: inventory_hostname in groups['controlplane']
+

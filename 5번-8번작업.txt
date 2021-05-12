@@ -1,0 +1,24 @@
+5. docker repo 다운
+  - https://download.docker.com/linux/centos/docker-ce.repo
+  - 모듈: get_url
+  - 다운위치: /etc/yum.repos.d/
+
+6. k8s repo 구성 (*)
+  - https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+  - 모듈 yum_repository
+  - gpg 구성
+  - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+  - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
+7. k8s pkg 설치
+  - 모듈: yum
+  - 패키지: docker-ce, wget, kubelet, kubeadm, kubectl 
+  - loop로 깔끔하게... 
+
+8. docker 데몬 스타트
+  - 모듈: service
+  - 참고: state, enabled 선언
+
+
+
+
