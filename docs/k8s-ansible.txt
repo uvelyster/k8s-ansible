@@ -1,0 +1,46 @@
+- workFlow
+1. 사전구성 
+
+2. 패키지 설치 
+   - docker, k8s
+
+3. netfilter 활성 
+
+4. DNS 구성 
+   - dnsmasq
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. selinux 비활성화
+2. 방화벽 중지
+3. 스왑 중지 단, 스왑이 있을경우
+4. fstab에서 스왑 제거
+------------------------------------
+5. docker repo 다운
+  - https://download.docker.com/linux/centos/docker-ce.repo
+
+6. k8s repo 구성
+  - https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+
+7. k8s pkg 설치
+8. docker 데몬 스타트
+------------------------------------
+9. br_netfilter 실행
+10. sysctl 활성화
+11. docker kubelet 재기동
+------------------------------------
+12. resolv.conf.j2 복사
+13. /etc/hosts 복사
+14. dnsmasq 서비스 구성
+15. dnsmasq 서비스 시작
+
