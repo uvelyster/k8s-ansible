@@ -1,0 +1,11 @@
+9. br_netfilter 실행
+  - 모듈: modprobe
+  - 참고: state 선언
+
+10. sysctl 활성화 (*) 
+  - 모듈: sysctl
+  - 참고: net.bridge.bridge-nf-call-iptables
+
+11. docker kubelet 재기동
+  - 모듈: service
+  - 참고: state 재시작 선언
