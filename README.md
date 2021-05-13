@@ -18,3 +18,5 @@ nmcli con mod "enp0s3" connection.autoconnect yes
 ## set hostname
 hostnamectl set-hostname master  
 
+## check point  
+2 core of master cpu  
