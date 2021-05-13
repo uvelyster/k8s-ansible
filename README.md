@@ -20,3 +20,5 @@ hostnamectl set-hostname master
 
 ## check point  
 2 core of master cpu  
+more than 1700mb memory  
+dns query
