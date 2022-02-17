@@ -105,3 +105,17 @@
     state: started
     enabled: true
   when: inventory_hostname in groups['controlplane']
+
+- name: 
+  copy:
+    src: files/docker.service
+    dest: /usr/lib/systemd/system/docker.service
+
+- name: daemon reload
+  systemd:
+    daemon_reload: yes
+
+- name: restart docker
+  service:
+    name: docker
+    state: restarted

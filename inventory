@@ -1,11 +1,12 @@
 workstation
 
 [controlplane]
-master
+servera.lab.example.com
 
 [nodes]
-node1
-node2
+serverb.lab.example.com
+serverc.lab.example.com
+serverd.lab.example.com
 
 [cluster_node:children]
 controlplane
